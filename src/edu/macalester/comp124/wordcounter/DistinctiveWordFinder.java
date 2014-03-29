@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Interesting word finder.
@@ -51,13 +53,21 @@ public class DistinctiveWordFinder {
 	 */
 	private void countWordsInOneFile(File file1, AllWordsCounter counter) throws IOException {
 		BufferedReader r = new BufferedReader(new FileReader(file1));
+        List<String> parsedWords = new ArrayList<String>();
 		while (true) {
 			String line = r.readLine();
 			if (line == null) {
 				break;
 			}
             for (String w : splitLine(line)) {
-                counter.count(w);
+                String[] tokens = w.split(" ");
+                for (String t : tokens){
+                    parsedWords.add(new String (t));
+                }
+            }
+            for (int i=0; i <= parsedWords.size(); i++){
+                String currentWord = parsedWords.get(i);
+                counter.count(currentWord);
             }
 		}
 	}
@@ -70,6 +80,7 @@ public class DistinctiveWordFinder {
 	private void findDistinctive() {
         // TODO: initialize to words in primary counter
         String words[] = null;
+
 
         // This array will be used to sort the word scores;
         WordScore scores[] = new WordScore[words.length];
